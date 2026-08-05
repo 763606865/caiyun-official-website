@@ -73,7 +73,7 @@ async function loadCurrentUser() {
 
 JSON 对象会自动序列化并设置 `Content-Type: application/json`。成功响应被解包为 `{data, meta, requestId, status}`，错误响应抛出 `ApiError`，字段校验信息位于 `error.errors`。
 
-浏览器不会直接跨域访问后端，而是请求同源的 `/backend-api/*`，再由 Next.js rewrite 转发到 `NEXT_PUBLIC_API_URL/api/*`。这可以避免自定义开发域名、反向代理和生产域名分别配置 CORS。Server Component 等服务端调用仍直接访问后端 Host。
+浏览器不会直接跨域访问后端，而是请求同源的 `/backend-api/*`。开发和生产环境的 Nginx 需要将该路径转发到后端的 `/api/*`，从而避免分别配置 CORS。构建阶段的 Server Component 调用仍直接访问 `NEXT_PUBLIC_API_URL`。
 
 客户端还支持 Query 参数、请求取消、超时、幂等 GET 自动重试、Blob/Text/204 响应以及 Zod 响应校验：
 
@@ -173,6 +173,50 @@ public/                 # 静态资源
 | `pnpm lint:fix` | 自动修复可修复的 ESLint 问题 |
 | `pnpm typecheck` | TypeScript 类型检查 |
 | `pnpm check` | 依次运行 lint、typecheck、build |
+
+## 生产部署
+
+项目使用 Next.js 静态导出。执行 `pnpm build` 后，完整静态站点位于 `out/`，生产环境不需要运行 `pnpm start` 或监听 Node.js 端口。
+
+`NEXT_PUBLIC_*` 变量会在构建时写入静态资源，因此必须在 `pnpm build` 前设置生产值；修改后需要重新构建。
+
+下面的 Nginx 示例将 `/` 托管为前端静态站点，将 `/admin/` 交给后端管理项目，并将浏览器的 `/backend-api/` 请求转发到后端 `/api/`：
+
+```nginx
+server {
+    listen 80;
+    server_name www.example.com;
+    root /var/www/caiyun-website/out;
+
+    location = /admin {
+        return 301 /admin/;
+    }
+
+    location ^~ /admin/ {
+        proxy_pass http://127.0.0.1:8000;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+
+    location ^~ /backend-api/ {
+        proxy_pass http://127.0.0.1:8000/api/;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+
+    location / {
+        try_files $uri $uri/ $uri.html =404;
+    }
+
+    error_page 404 /404.html;
+}
+```
+
+这里的 `/admin/` 会原样传给后端。如果后端希望收到去掉 `/admin` 前缀的路径，把对应配置改为 `proxy_pass http://127.0.0.1:8000/;`。
 
 ## 开发约定
 
