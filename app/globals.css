@@ -33,23 +33,6 @@
   --radius-card: var(--radius);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    color-scheme: dark;
-    --background: #0d1117;
-    --foreground: #f0f4f8;
-    --surface: #151b23;
-    --muted: #202938;
-    --muted-foreground: #9aa4b2;
-    --border: #303947;
-    --primary: #60a5fa;
-    --primary-hover: #93c5fd;
-    --primary-foreground: #071426;
-    --danger: #ef4444;
-    --ring: #60a5fa;
-  }
-}
-
 * {
   border-color: var(--border);
 }
@@ -65,6 +48,21 @@ body {
   font-family: var(--font-sans);
   text-rendering: optimizeLegibility;
 }
+
+html { scroll-behavior: smooth; }
+
+.section-kicker { @apply text-xs font-bold tracking-[0.2em] text-primary; }
+.section-title { @apply mt-4 max-w-3xl text-3xl font-bold leading-tight tracking-tight text-slate-950 sm:text-4xl; }
+.section-description { @apply mt-5 max-w-2xl text-base leading-8 text-slate-600; }
+.icon-blue { @apply bg-blue-50 text-blue-600; }
+.icon-violet { @apply bg-violet-50 text-violet-600; }
+.icon-cyan { @apply bg-cyan-50 text-cyan-600; }
+.icon-amber { @apply bg-amber-50 text-amber-600; }
+.form-field { @apply grid gap-2 text-sm font-medium text-slate-700; }
+.form-field input,
+.form-field select,
+.form-field textarea { @apply w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm font-normal outline-none transition placeholder:text-slate-400 focus:border-blue-400 focus:bg-white focus:ring-4 focus:ring-blue-100; }
+.form-field textarea { @apply resize-y; }
 
 button,
 a {

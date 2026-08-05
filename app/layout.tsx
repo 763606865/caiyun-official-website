@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { siteConfig } from "@/config/site";
 import { Providers } from "./providers";
+import { SiteFooter } from "@/components/site/site-footer";
+import { SiteHeader } from "@/components/site/site-header";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -18,7 +20,13 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="zh-CN" className="h-full antialiased">
-      <body className="flex min-h-full flex-col"><Providers>{children}</Providers></body>
+      <body className="flex min-h-full flex-col">
+        <Providers>
+          <SiteHeader />
+          {children}
+          <SiteFooter />
+        </Providers>
+      </body>
     </html>
   );
 }
