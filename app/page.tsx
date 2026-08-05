@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { ArrowRight, Bot, Boxes, Braces, Check, ChevronRight, CloudCog, CodeXml, DatabaseZap, ExternalLink, FileCode2, Gauge, Globe2, Headphones, Layers3, LifeBuoy, MessageSquareText, MonitorSmartphone, Puzzle, Rocket, ShieldCheck, Sparkles, Users } from "lucide-react";
 import { HeroCarousel } from "@/components/site/hero-carousel";
+import { CustomerRequirementForm } from "@/features/customer-requirements";
 
 const services = [
   { icon: MonitorSmartphone, title: "企业 Web 应用", text: "官网、业务门户、营销活动与复杂交互应用，从设计到上线一站式交付。", color: "blue" },
@@ -73,7 +74,7 @@ export default function HomePage() {
       <section id="contact" className="px-5 pb-24 sm:px-8">
         <div className="mx-auto grid max-w-7xl overflow-hidden rounded-[2rem] bg-slate-950 text-white lg:grid-cols-[.9fr_1.1fr]">
           <div className="relative p-8 sm:p-12 lg:p-16"><div className="absolute -left-20 -top-20 size-64 rounded-full bg-blue-600/25 blur-3xl" /><div className="relative"><p className="section-kicker text-cyan-300">LET’S BUILD TOGETHER</p><h2 className="mt-4 text-3xl font-bold leading-tight sm:text-4xl">告诉我们你的想法，<br />一起把它变成产品</h2><p className="mt-5 max-w-md text-sm leading-7 text-slate-400">提交项目需求后，业务顾问会尽快与你联系，提供初步建议与合作方案。</p><div className="mt-10 grid gap-4 text-sm text-slate-300"><span className="flex items-center gap-3"><MessageSquareText className="size-5 text-cyan-300" />需求梳理与方案建议</span><span className="flex items-center gap-3"><CodeXml className="size-5 text-violet-300" />技术路径与周期评估</span><span className="flex items-center gap-3"><Sparkles className="size-5 text-blue-300" />产品试用与能力演示</span></div></div></div>
-          <div id="trial" className="m-3 rounded-[1.4rem] bg-white p-7 text-slate-900 sm:p-10"><h3 className="text-xl font-bold">预约项目咨询</h3><p className="mt-2 text-sm text-slate-500">请留下联系方式和简要需求</p><form className="mt-7 grid gap-5 sm:grid-cols-2"><label className="form-field"><span>姓名 *</span><input required name="name" placeholder="怎么称呼您" /></label><label className="form-field"><span>手机号码 *</span><input required name="phone" type="tel" placeholder="请输入手机号码" /></label><label className="form-field"><span>公司名称</span><input name="company" placeholder="所在企业或团队" /></label><label className="form-field"><span>需求类型</span><select name="type" defaultValue=""><option value="" disabled>请选择</option><option>官网 / CMS</option><option>Web / 管理系统</option><option>移动应用</option><option>产品试用</option><option>其他需求</option></select></label><label className="form-field sm:col-span-2"><span>项目需求</span><textarea name="message" rows={4} placeholder="请简要描述业务目标、核心功能或预期上线时间" /></label><label className="flex items-start gap-2 text-xs leading-5 text-slate-500 sm:col-span-2"><input required type="checkbox" className="mt-0.5" />我已阅读并同意隐私政策，授权彩云网络与我联系</label><button type="submit" className="inline-flex items-center justify-center gap-2 rounded-xl bg-primary px-6 py-3.5 text-sm font-semibold text-white hover:bg-primary-hover sm:col-span-2">提交需求<ArrowRight className="size-4" /></button></form></div>
+          <CustomerRequirementForm />
         </div>
       </section>
     </main>

@@ -26,7 +26,7 @@ export interface ApiSuccess<T> {
 export type ApiFieldErrors = Record<string, string[]>;
 
 export interface ApiFailure {
-  code: number;
+  code?: number;
   message: string;
   errors?: ApiFieldErrors;
 }

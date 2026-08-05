@@ -38,7 +38,8 @@ async function parseJson(response: Response): Promise<unknown> {
 function isApiFailure(value: unknown): value is ApiFailure {
   if (!value || typeof value !== "object") return false;
   const record = value as Record<string, unknown>;
-  return typeof record.code === "number" && typeof record.message === "string";
+  return typeof record.message === "string" &&
+    (record.code === undefined || typeof record.code === "number");
 }
 
 function isApiSuccess<T>(value: unknown): value is ApiSuccess<T> {
