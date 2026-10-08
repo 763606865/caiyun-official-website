@@ -1,82 +1,173 @@
 import Link from "next/link";
-import { ArrowRight, Bot, Boxes, Braces, Check, ChevronRight, CloudCog, CodeXml, DatabaseZap, ExternalLink, FileCode2, Gauge, Globe2, Headphones, Layers3, LifeBuoy, MessageSquareText, MonitorSmartphone, Puzzle, Rocket, ShieldCheck, Sparkles, Users } from "lucide-react";
-import { HeroCarousel } from "@/components/site/hero-carousel";
-import { CustomerRequirementForm } from "@/features/customer-requirements";
+import { Building2, Sparkles, Workflow } from "lucide-react";
+import { CaseVisual, CtaBand, TagList } from "@/components/site/marketing";
 
 const services = [
-  { icon: MonitorSmartphone, title: "企业 Web 应用", text: "官网、业务门户、营销活动与复杂交互应用，从设计到上线一站式交付。", color: "blue" },
-  { icon: Layers3, title: "管理系统与 CMS", text: "围绕内容、客户与业务流程构建高效、易维护的企业管理平台。", color: "violet" },
-  { icon: DatabaseZap, title: "后端与开放 API", text: "稳定的服务端架构、数据模型与第三方系统集成，支撑业务持续演进。", color: "cyan" },
-  { icon: Headphones, title: "持续运营与运维", text: "版本迭代、数据分析、性能优化与安全维护，让产品持续创造价值。", color: "amber" },
+  { href: "/services#web", title: "企业 Web 应用", text: "官网、业务门户与客户自助入口，兼顾品牌呈现与可扩展结构。", tone: "border-l-blue-600 hover:bg-blue-50" },
+  { href: "/services#admin", title: "管理系统", text: "订单、库存、权限与内部协作后台，围绕真实岗位流程设计。", tone: "border-l-violet-600 hover:bg-violet-50" },
+  { href: "/services#api", title: "后端与 API", text: "稳定接口、数据同步与第三方集成，让系统之间可协作。", tone: "border-l-cyan-400 hover:bg-cyan-50" },
+  { href: "/services#ops", title: "持续运营", text: "上线后的缺陷响应、小需求迭代与监控维护，保持系统可用。", tone: "border-l-amber-400 hover:bg-amber-50" },
 ];
 
-const products = [
-  { tag: "内容运营", title: "企业级 CMS 内容中台", text: "多站点、多栏目、多角色协作，让品牌内容高效生产与分发。", icon: CloudCog, tone: "from-blue-600 to-blue-500" },
-  { tag: "快速构建", title: "通用业务开发套件", text: "认证、权限、表单、文件、消息等高频模块按需组合，减少重复开发。", icon: Puzzle, tone: "from-violet-600 to-fuchsia-500" },
-  { tag: "效率工具", title: "在线工具与开放能力", text: "聚合实用开发和办公工具，并逐步开放产品 API 与试用体验。", icon: Braces, tone: "from-cyan-500 to-teal-400" },
+const cases = [
+  { tone: "blue" as const, label: "01", title: "彩云 OA 系统", text: "把审批、通知和权限收进同一套办公协同系统，减少表格和即时消息来回传。", tags: ["办公协同", "Web / App"] },
+  { tone: "cyan" as const, label: "02", title: "彩云在线教培", text: "面向教培机构的在线课堂，同时支持直播课和录播课，方便排课、上课和回看。", tags: ["直播课", "录播课"] },
+  { tone: "violet" as const, label: "03", title: "彩云医疗系统", text: "覆盖医院挂号、诊所就诊和健康体检，并与医院现有 HIS 对接，避免另起一套孤岛。", tags: ["挂号就诊", "HIS 对接"] },
+  { tone: "amber" as const, label: "04", title: "MES 系统", text: "面向生产现场的制造执行系统，把工单、工序和现场进度放在同一条链路上。", tags: ["制造执行", "现场协同"] },
+  { tone: "ink" as const, label: "05", title: "企业官网 CMS", text: "给企业官网一套可运营的内容系统，栏目、页面和发布流程由业务人员自己维护。", tags: ["官网", "内容发布"] },
 ];
 
-const process = [
-  { number: "01", title: "需求共创", text: "梳理业务目标与优先级，形成清晰可落地的产品方案。" },
-  { number: "02", title: "快速原型", text: "基于成熟模板搭建原型，尽早验证关键流程与体验。" },
-  { number: "03", title: "敏捷交付", text: "分阶段开发、测试和验收，过程透明，进度持续可见。" },
-  { number: "04", title: "持续运营", text: "上线后持续优化功能、性能和数据表现，陪伴业务成长。" },
+const tiles = [
+  { title: "一对一", text: "项目范围、阶段产出和变更都对着具体业务谈，而不是只交一份报价单。", className: "bg-gradient-to-br from-blue-700 to-blue-500" },
+  { title: "可复用", text: "审批、排课、挂号、工单和内容发布，相近流程可以站在已有结构上开工。", className: "bg-gradient-to-br from-cyan-500 to-cyan-300 text-slate-950" },
+  { title: "AI 进流程", text: "摘要、分类、检索和辅助填写嵌进重复劳动多的环节，并保留人工复核。", className: "bg-gradient-to-br from-violet-700 to-violet-500" },
+  { title: "多端一起交", text: "Web、微信小程序、Android、iOS、鸿蒙按使用场景组合，数据走同一套接口。", className: "bg-gradient-to-br from-slate-950 to-slate-800" },
 ];
+
+const iconClass = "mb-6 grid size-10 place-items-center rounded-lg border";
 
 export default function HomePage() {
   return (
-    <main className="flex-1 overflow-hidden bg-white">
-      <HeroCarousel />
-
-      <section className="border-y border-slate-100 bg-white">
-        <div className="mx-auto grid max-w-7xl grid-cols-2 gap-px px-5 py-8 sm:grid-cols-4 sm:px-8">
-          {[['10+', '通用业务模块'], ['全周期', '产品研发服务'], ['7×24', '系统稳定守护'], ['持续', '产品运营迭代']].map(([value, label]) => <div key={label} className="px-5 py-4 text-center"><div className="text-2xl font-bold text-slate-950 sm:text-3xl">{value}</div><div className="mt-1 text-sm text-slate-500">{label}</div></div>)}
+    <main id="main" className="flex-1">
+      <section className="bg-[radial-gradient(circle_at_8%_18%,rgba(34,211,238,0.22),transparent_32%),radial-gradient(circle_at_92%_8%,rgba(124,58,237,0.16),transparent_34%),linear-gradient(180deg,#f3f7ff_0%,#fff_72%)]">
+        <div className="mx-auto grid max-w-6xl items-center gap-10 px-5 py-16 sm:px-8 lg:grid-cols-[1.15fr_0.85fr] lg:py-24">
+          <div>
+            <p className="text-sm font-semibold text-primary">软件外包 · 中小企业数字化</p>
+            <h1 className="mt-3 text-4xl font-semibold leading-tight tracking-tight text-slate-950 sm:text-5xl">把业务做到线上，用可交付的工程落地</h1>
+            <p className="mt-5 max-w-xl text-base leading-8 text-slate-600">
+              码上云为中小企业交付可上线的业务系统。产品线包括彩云 OA、在线教培、医疗、MES 与企业官网 CMS；前端覆盖 Web、微信小程序、Android、iOS 与鸿蒙。
+            </p>
+            <div className="mt-8 flex flex-wrap gap-3">
+              <Link href="/contact" className="inline-flex min-h-11 items-center rounded-lg bg-primary px-5 text-sm font-semibold text-white hover:bg-primary-hover">预约沟通</Link>
+              <Link href="/services" className="inline-flex min-h-11 items-center rounded-lg border border-slate-300 bg-white px-5 text-sm font-semibold text-slate-900 hover:border-primary">查看服务</Link>
+            </div>
+          </div>
+          <aside className="rounded-xl bg-slate-950 p-5 text-white shadow-xl" aria-label="交付能力示意">
+            <div className="mb-4 flex items-center gap-1.5">
+              <span className="size-2 rounded-full bg-rose-400" />
+              <span className="size-2 rounded-full bg-amber-300" />
+              <span className="size-2 rounded-full bg-emerald-400" />
+              <span className="ml-auto font-mono text-[11px] tracking-widest text-white/50">DELIVERY / STACK</span>
+            </div>
+            <div className="grid min-h-52 grid-cols-2 gap-3">
+              <div className="row-span-2 flex flex-col justify-end rounded-xl bg-gradient-to-br from-blue-700 to-sky-400 p-4">
+                <span className="font-mono text-[11px] uppercase tracking-wider text-white/70">工程底座</span>
+                <strong className="mt-2 text-xl font-semibold leading-snug">按业务组合，不从零开始</strong>
+                <span className="mt-2 text-sm text-white/85">权限 · 表单 · 消息 · CMS · API</span>
+              </div>
+              <div className="flex flex-col justify-end rounded-xl bg-gradient-to-br from-cyan-300 to-cyan-200 p-4 text-cyan-950">
+                <span className="font-mono text-[11px] uppercase tracking-wider opacity-70">多端</span>
+                <strong className="mt-1 text-lg font-semibold">Web 到鸿蒙</strong>
+              </div>
+              <div className="flex flex-col justify-end rounded-xl bg-gradient-to-br from-violet-700 to-violet-500 p-4">
+                <span className="font-mono text-[11px] uppercase tracking-wider text-white/70">AI</span>
+                <strong className="mt-1 text-lg font-semibold">嵌进真实流程</strong>
+              </div>
+            </div>
+            <div className="mt-4 flex flex-wrap gap-2">
+              {["Web", "微信小程序", "Android", "iOS", "鸿蒙"].map((item) => (
+                <span key={item} className="rounded-full border border-white/15 bg-white/10 px-2.5 py-1 text-xs">{item}</span>
+              ))}
+            </div>
+          </aside>
         </div>
       </section>
 
-      <section id="services" className="mx-auto max-w-7xl px-5 py-24 sm:px-8">
-        <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
-          <div><p className="section-kicker">DEVELOPMENT SERVICES</p><h2 className="section-title">从想法到上线，覆盖软件全生命周期</h2><p className="section-description">不只完成一个项目，更为企业建立可持续演进的软件能力。</p></div>
-          <Link href="/#contact" className="inline-flex items-center gap-2 text-sm font-semibold text-primary">获取定制开发方案<ArrowRight className="size-4" /></Link>
-        </div>
-        <div className="mt-12 grid gap-5 md:grid-cols-2 lg:grid-cols-4">
-          {services.map((service) => <article key={service.title} className="group rounded-3xl border border-slate-200 bg-white p-7 transition duration-300 hover:-translate-y-1 hover:border-blue-200 hover:shadow-2xl hover:shadow-blue-950/8"><div className={`grid size-13 place-items-center rounded-2xl icon-${service.color}`}><service.icon className="size-6" /></div><h3 className="mt-8 text-xl font-bold text-slate-950">{service.title}</h3><p className="mt-3 text-sm leading-7 text-slate-600">{service.text}</p><ChevronRight className="mt-7 size-5 text-slate-300 transition group-hover:translate-x-1 group-hover:text-primary" /></article>)}
+      <section className="border-y border-slate-200 bg-white" aria-label="交付范围">
+        <div className="mx-auto grid max-w-6xl sm:grid-cols-2 lg:grid-cols-4">
+          {[
+            ["五条产品线", "OA、教培、医疗、MES、CMS", "text-blue-600"],
+            ["五个终端", "Web、小程序、Android、iOS、鸿蒙", "text-cyan-600"],
+            ["多种语言", "按场景选型，不限定技术栈", "text-violet-600"],
+            ["全周期", "从第一版上线到持续运营", "text-amber-600"],
+          ].map(([value, label, color], index) => (
+            <div key={value} className={`px-5 py-6 text-center ${index ? "border-slate-200 sm:border-l" : ""} ${index > 1 ? "border-t sm:border-t-0 lg:border-t-0" : ""} ${index === 2 ? "sm:border-t lg:border-t-0" : ""}`}>
+              <div className={`text-xl font-semibold ${color}`}>{value}</div>
+              <div className="mt-1 text-sm text-slate-500">{label}</div>
+            </div>
+          ))}
         </div>
       </section>
 
-      <section id="products" className="relative bg-slate-950 py-24 text-white">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_80%_20%,rgba(124,58,237,.18),transparent_35%),radial-gradient(circle_at_8%_70%,rgba(34,211,238,.12),transparent_28%)]" />
-        <div className="relative mx-auto max-w-7xl px-5 sm:px-8">
-          <p className="section-kicker text-cyan-300">PRODUCTS & CAPABILITIES</p><h2 className="section-title max-w-3xl text-white">成熟产品能力，让每次定制开发站在更高起点</h2>
-          <div className="mt-12 grid gap-6 lg:grid-cols-3">
-            {products.map((product, index) => <article key={product.title} className="group overflow-hidden rounded-3xl border border-white/10 bg-white/5 p-2 backdrop-blur-sm"><div className={`relative h-52 overflow-hidden rounded-[1.25rem] bg-gradient-to-br ${product.tone} p-7`}><div className="absolute -bottom-12 -right-10 size-44 rounded-full border-[28px] border-white/10" /><product.icon className="size-10" /><div className="absolute bottom-6 left-7 rounded-full bg-white/15 px-3 py-1.5 text-xs font-semibold backdrop-blur">{product.tag}</div><span className="absolute right-6 top-6 font-mono text-xs text-white/60">0{index + 1}</span></div><div className="p-6"><h3 className="text-xl font-bold">{product.title}</h3><p className="mt-3 text-sm leading-7 text-slate-400">{product.text}</p><Link href="/#trial" className="mt-6 inline-flex items-center gap-2 text-sm font-semibold text-white">查看产品<ExternalLink className="size-4" /></Link></div></article>)}
+      <section className="border-b border-slate-200 bg-slate-50">
+        <div className="mx-auto max-w-6xl px-5 py-20 sm:px-8">
+          <p className="text-sm font-semibold text-primary">为什么选择码上云</p>
+          <h2 className="mt-2 text-3xl font-semibold tracking-tight">三条能说清的交付优势</h2>
+          <p className="mt-3 max-w-2xl text-sm leading-7 text-slate-600">不靠空泛承诺，而是用技术选型、协作节奏与上线后的持续运营，降低中小企业数字化的不确定性。</p>
+          <div className="mt-10 grid gap-5 md:grid-cols-3">
+            <article className="rounded-xl border border-slate-200 bg-white p-6">
+              <div className={`${iconClass} border-blue-100 bg-blue-50 text-blue-600`}><Workflow className="size-5" /></div>
+              <h3 className="text-lg font-semibold">多语言交付</h3>
+              <p className="mt-2 text-sm leading-7 text-slate-600">按业务形态选择合适的语言，而不是用单一技术栈硬套所有项目，减少后期改造成本。</p>
+            </article>
+            <article className="rounded-xl border border-slate-200 bg-white p-6">
+              <div className={`${iconClass} border-violet-100 bg-violet-50 text-violet-600`}><Sparkles className="size-5" /></div>
+              <h3 className="text-lg font-semibold">AI 赋能落地</h3>
+              <p className="mt-2 text-sm leading-7 text-slate-600">把识别、摘要、检索与辅助决策嵌进真实流程，先解决重复劳动与响应效率，再谈更大范围的智能化。</p>
+            </article>
+            <article className="rounded-xl border border-slate-200 bg-white p-6">
+              <div className={`${iconClass} border-cyan-100 bg-cyan-50 text-cyan-700`}><Building2 className="size-5" /></div>
+              <h3 className="text-lg font-semibold">服务中小企业转型</h3>
+              <p className="mt-2 text-sm leading-7 text-slate-600">从能上线的第一版开始，控制范围与节奏，让系统跟着业务成长，而不是一次做满、长期难用。</p>
+            </article>
           </div>
         </div>
       </section>
 
-      <section id="tools" className="mx-auto grid max-w-7xl gap-14 px-5 py-24 sm:px-8 lg:grid-cols-2 lg:items-center">
-        <div className="relative min-h-[520px] rounded-[2rem] bg-[#eef6ff] p-6 sm:p-10">
-          <div className="absolute inset-0 rounded-[2rem] bg-[linear-gradient(rgba(37,99,235,.06)_1px,transparent_1px),linear-gradient(90deg,rgba(37,99,235,.06)_1px,transparent_1px)] bg-[size:28px_28px]" />
-          <div className="relative ml-auto w-[92%] rounded-3xl border border-white bg-white p-5 shadow-2xl shadow-blue-900/15"><div className="flex items-center justify-between border-b border-slate-100 pb-4"><div><p className="text-xs text-slate-400">PROJECT OVERVIEW</p><h3 className="mt-1 font-bold">项目交付工作台</h3></div><span className="rounded-full bg-emerald-50 px-3 py-1 text-xs font-semibold text-emerald-600">进度正常</span></div><div className="mt-5 grid grid-cols-3 gap-3">{['需求', '开发', '验收'].map((item, index) => <div key={item} className={`rounded-xl p-3 ${index === 1 ? 'bg-blue-600 text-white' : 'bg-slate-50 text-slate-700'}`}><div className="text-xs opacity-60">阶段 0{index + 1}</div><div className="mt-5 text-sm font-bold">{item}</div></div>)}</div><div className="mt-5 space-y-3">{[82, 68, 94].map((width, index) => <div key={width}><div className="mb-1.5 flex justify-between text-xs text-slate-500"><span>{['前端应用', 'API 服务', '质量验证'][index]}</span><span>{width}%</span></div><div className="h-2 rounded-full bg-slate-100"><div className={`h-full rounded-full ${index === 1 ? 'bg-violet-500' : index === 2 ? 'bg-cyan-400' : 'bg-blue-600'}`} style={{width:`${width}%`}} /></div></div>)}</div></div>
-          <div className="relative mt-5 w-[74%] rounded-2xl bg-slate-950 p-5 text-white shadow-xl"><FileCode2 className="size-7 text-cyan-300" /><p className="mt-5 text-sm font-semibold">标准模块复用率</p><p className="mt-1 text-3xl font-bold">60%<span className="ml-2 text-xs font-normal text-emerald-300">交付提速</span></p></div>
+      <section className="mx-auto max-w-6xl px-5 py-20 sm:px-8">
+        <div className="grid gap-6 lg:grid-cols-2 lg:items-end">
+          <div>
+            <p className="text-sm font-semibold text-primary">服务摘要</p>
+            <h2 className="mt-2 text-3xl font-semibold tracking-tight">从业务入口到后台与接口，一条交付链路</h2>
+          </div>
+          <p className="text-sm leading-7 text-slate-600">企业需要的不只是页面，而是可运营的系统。我们覆盖 Web 应用、管理后台、后端 API 与上线后的持续迭代。</p>
         </div>
-        <div><p className="section-kicker">ENGINEERING FOUNDATION</p><h2 className="section-title">工程化底座，兼顾速度与长期维护</h2><p className="section-description">面对频繁变化的甲方需求，我们将通用能力沉淀为标准模块，同时保留灵活扩展空间。</p><div className="mt-9 grid gap-5 sm:grid-cols-2">{[{ icon: Boxes, title: '组件化复用', text: '通用 UI 与业务模块灵活组合' }, { icon: ShieldCheck, title: '安全与质量', text: '类型安全、异常治理与质量门禁' }, { icon: Rocket, title: '敏捷交付', text: '快速原型、分段上线、持续反馈' }, { icon: LifeBuoy, title: '长期可维护', text: '清晰架构、统一规范、完整文档' }].map((item) => <div key={item.title} className="flex gap-4"><div className="grid size-11 shrink-0 place-items-center rounded-xl bg-blue-50 text-primary"><item.icon className="size-5" /></div><div><h3 className="font-bold text-slate-950">{item.title}</h3><p className="mt-1 text-sm leading-6 text-slate-500">{item.text}</p></div></div>)}</div></div>
-      </section>
-
-      <section id="about" className="bg-blue-50/70 py-24">
-        <div className="mx-auto max-w-7xl px-5 sm:px-8"><div className="text-center"><p className="section-kicker">HOW WE DELIVER</p><h2 className="section-title">透明、敏捷、持续的项目协作方式</h2></div><div className="relative mt-14 grid gap-5 md:grid-cols-4"><div className="absolute left-[10%] right-[10%] top-9 hidden h-px bg-gradient-to-r from-blue-300 via-violet-300 to-cyan-300 md:block" />{process.map((step, index) => <article key={step.number} className="relative rounded-2xl border border-white bg-white p-6 shadow-sm"><div className={`relative z-10 grid size-12 place-items-center rounded-2xl text-sm font-bold text-white ${index % 2 ? 'bg-violet-500' : 'bg-primary'}`}>{step.number}</div><h3 className="mt-7 text-lg font-bold text-slate-950">{step.title}</h3><p className="mt-2 text-sm leading-7 text-slate-600">{step.text}</p></article>)}</div></div>
-      </section>
-
-      <section id="cases" className="mx-auto max-w-7xl px-5 py-24 sm:px-8">
-        <div className="grid gap-12 lg:grid-cols-[.8fr_1.2fr] lg:items-center"><div><p className="section-kicker">WHY CAIYUN</p><h2 className="section-title">不止写代码，更理解业务如何落地</h2><p className="section-description">以客户目标为中心，把产品、技术和运营放在同一张路线图上。</p><ul className="mt-8 grid gap-4">{['成熟模板减少重复投入', '过程透明，关键节点可验收', '专属团队持续响应需求', '上线后持续运营和迭代'].map((item) => <li key={item} className="flex items-center gap-3 text-sm font-medium text-slate-700"><span className="grid size-6 place-items-center rounded-full bg-emerald-100 text-emerald-600"><Check className="size-3.5" /></span>{item}</li>)}</ul></div><div className="grid gap-5 sm:grid-cols-2">{[{ icon: Users, value: '一对一', label: '项目顾问全程协同', color: 'bg-blue-600' }, { icon: Gauge, value: '更快速', label: '复用底座缩短启动周期', color: 'bg-cyan-400 text-slate-950' }, { icon: Bot, value: '智能化', label: 'AI 与自动化融入流程', color: 'bg-violet-500' }, { icon: Globe2, value: '全场景', label: '网站、工具、系统与产品', color: 'bg-slate-900' }].map((item) => <div key={item.value} className={`rounded-3xl p-7 text-white ${item.color}`}><item.icon className="size-7" /><div className="mt-10 text-3xl font-bold">{item.value}</div><div className="mt-2 text-sm opacity-75">{item.label}</div></div>)}</div></div>
-      </section>
-
-      <section id="contact" className="px-5 pb-24 sm:px-8">
-        <div className="mx-auto grid max-w-7xl overflow-hidden rounded-[2rem] bg-slate-950 text-white lg:grid-cols-[.9fr_1.1fr]">
-          <div className="relative p-8 sm:p-12 lg:p-16"><div className="absolute -left-20 -top-20 size-64 rounded-full bg-blue-600/25 blur-3xl" /><div className="relative"><p className="section-kicker text-cyan-300">LET’S BUILD TOGETHER</p><h2 className="mt-4 text-3xl font-bold leading-tight sm:text-4xl">告诉我们你的想法，<br />一起把它变成产品</h2><p className="mt-5 max-w-md text-sm leading-7 text-slate-400">提交项目需求后，业务顾问会尽快与你联系，提供初步建议与合作方案。</p><div className="mt-10 grid gap-4 text-sm text-slate-300"><span className="flex items-center gap-3"><MessageSquareText className="size-5 text-cyan-300" />需求梳理与方案建议</span><span className="flex items-center gap-3"><CodeXml className="size-5 text-violet-300" />技术路径与周期评估</span><span className="flex items-center gap-3"><Sparkles className="size-5 text-blue-300" />产品试用与能力演示</span></div></div></div>
-          <CustomerRequirementForm />
+        <div className="mt-8 overflow-hidden rounded-xl border border-slate-200">
+          {services.map((item) => (
+            <Link key={item.href} href={item.href} className={`grid gap-2 border-b border-l-4 border-slate-200 px-5 py-5 last:border-b-0 sm:grid-cols-[1.1fr_2fr_auto] sm:items-center ${item.tone}`}>
+              <h3 className="font-semibold">{item.title}</h3>
+              <p className="text-sm text-slate-600">{item.text}</p>
+              <span className="text-sm font-medium">了解详情 →</span>
+            </Link>
+          ))}
         </div>
       </section>
+
+      <section className="border-y border-slate-200 bg-slate-50">
+        <div className="mx-auto max-w-6xl px-5 py-20 sm:px-8">
+          <p className="text-sm font-semibold text-primary">产品与案例</p>
+          <h2 className="mt-2 text-3xl font-semibold tracking-tight">五个已经在做的产品方向</h2>
+          <p className="mt-3 max-w-2xl text-sm leading-7 text-slate-600">这些是码上云手头的项目，用来说明我们交付过的业务类型。页面不写未经确认的客户名称和成果数字。</p>
+          <div className="mt-10 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+            {cases.map((item) => (
+              <article key={item.title} className="overflow-hidden rounded-xl border border-slate-200 bg-white">
+                <CaseVisual tone={item.tone} label={item.label} title={item.title} />
+                <div className="flex flex-1 flex-col gap-3 p-5">
+                  <p className="text-sm leading-7 text-slate-600">{item.text}</p>
+                  <TagList tags={item.tags} />
+                </div>
+              </article>
+            ))}
+          </div>
+          <Link href="/cases" className="mt-8 inline-flex min-h-11 items-center rounded-lg border border-slate-300 bg-white px-5 text-sm font-semibold hover:border-primary">查看全部产品案例</Link>
+        </div>
+      </section>
+
+      <section className="mx-auto max-w-6xl px-5 py-20 sm:px-8">
+        <p className="text-sm font-semibold text-primary">怎么一起做</p>
+        <h2 className="mt-2 text-3xl font-semibold tracking-tight">先把主流程跑通，再按业务往上加</h2>
+        <p className="mt-3 max-w-2xl text-sm leading-7 text-slate-600">中小企业更需要一个能上线、能改、能看懂的第一版。语言和终端都按场景选，不先定技术再找需求。</p>
+        <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          {tiles.map((item) => (
+            <article key={item.title} className={`flex min-h-44 flex-col justify-end rounded-2xl p-5 text-white ${item.className}`}>
+              <strong className="text-2xl font-semibold">{item.title}</strong>
+              <span className="mt-2 text-sm leading-6 opacity-90">{item.text}</span>
+            </article>
+          ))}
+        </div>
+      </section>
+
+      <CtaBand title="准备启动项目？先把需求说清楚" text="留下业务目标、现状与时间预期，我们会在工作日尽快回复，并给出适合的交付路径建议。" />
     </main>
   );
 }
