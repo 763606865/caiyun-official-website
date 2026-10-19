@@ -10,7 +10,7 @@ const navigation = [
   { label: "首页", href: "/" },
   { label: "服务", href: "/services" },
   { label: "案例", href: "/cases" },
-  { label: "关于", href: "/about" },
+  { label: "公司简介", href: "/about" },
 ];
 
 function normalize(path: string) {
