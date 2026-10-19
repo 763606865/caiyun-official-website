@@ -18,20 +18,26 @@ const locations = ["北京", "上海", "武汉", "南京", "重庆", "昆明", "
 const labels = ["公司简介", "合作优势", "项目案例", "独立部署", "交付流程", "服务网络"];
 
 export function CompanyProfile() {
-  useEffect(() => {
-    document.documentElement.classList.add("company-profile-active");
-    return () => document.documentElement.classList.remove("company-profile-active");
-  }, []);
   const [selected, setSelected] = useState(0);
   const [active, setActive] = useState(0);
+  useEffect(() => {
+    document.documentElement.classList.add("company-profile-active");
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) setActive(Number((entry.target as HTMLElement).dataset.panel));
+      });
+    }, { rootMargin: "-73px 0px 0px", threshold: 0.5 });
+    document.querySelectorAll("[data-panel]").forEach((panel, index) => {
+      (panel as HTMLElement).dataset.panel = String(index);
+      observer.observe(panel);
+    });
+    return () => {
+      observer.disconnect();
+      document.documentElement.classList.remove("company-profile-active");
+    };
+  }, []);
   const item = cases[selected];
-  return <main id="main" className={styles.profile} aria-label="公司简介" onScroll={(event) => {
-    const panels = Array.from(event.currentTarget.querySelectorAll<HTMLElement>("[data-panel]"));
-    const top = event.currentTarget.getBoundingClientRect().top;
-    let nearest = 0;
-    panels.forEach((panel, index) => { if (Math.abs(panel.getBoundingClientRect().top - top) < Math.abs(panels[nearest].getBoundingClientRect().top - top)) nearest = index; });
-    setActive(nearest);
-  }}>
+  return <main id="main" className={styles.profile} aria-label="公司简介">
     <section id="intro" data-panel className={styles.panel}>
       <div className={styles.inner}>
         <p className={styles.kicker}>江西码上云信息技术有限公司 · 江西南昌</p>
@@ -63,8 +69,7 @@ export function CompanyProfile() {
     <nav className={styles.dots} aria-label="专题页板块">{labels.map((label, index) => <a key={label} href={`#${["intro", "strength", "projects", "deployment", "delivery", "network"][index]}`} onClick={(event) => {
       event.preventDefault();
       const panel = document.getElementById(["intro", "strength", "projects", "deployment", "delivery", "network"][index]);
-      const scroller = panel?.closest("main");
-      if (panel && scroller) scroller.scrollTo({ top: panel.offsetTop, behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "instant" : "smooth" });
+      panel?.scrollIntoView({ block: "start", behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "instant" : "smooth" });
     }} aria-label={label} aria-current={active === index ? "step" : undefined}><span /> <em>{label}</em></a>)}</nav>
   </main>;
 }
