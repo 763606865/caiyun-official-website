@@ -48,6 +48,14 @@ export function SiteFooter() {
       <div className="border-t border-white/10">
         <div className="mx-auto flex max-w-6xl flex-col gap-2 px-5 py-5 text-xs text-slate-500 sm:flex-row sm:justify-between sm:px-8">
           <span>© {siteConfig.legalName}</span>
+          <a
+            href="https://beian.miit.gov.cn/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="hover:text-white"
+          >
+            赣ICP备2026010561号-2
+          </a>
           <span>{siteConfig.domain}</span>
         </div>
       </div>
